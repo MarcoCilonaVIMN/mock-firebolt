@@ -19,6 +19,7 @@
 import Header from './Header.mjs';
 import Content from './Content.mjs';
 import Footer from './Footer.mjs';
+import icons from "./icons.mjs";
 
 export default {
   name: 'App',
@@ -26,13 +27,27 @@ export default {
   props: {},
   template: `
     <div id="app">
-      <Header></Header>
-      <Content v-bind:meta="meta"></Content>
-      <Footer></Footer>
+      <div class="wrapper">
+        <div class="off-canvas" :class="{ 'is-active': isMenuActive }" >
+          <Header></Header>
+          <Footer></Footer>
+        </div>
+        <div class="layout-container" :class="{ 'is-active': isMenuActive }" >
+          <a class="off-canvas-control" @click="isMenuActive = !isMenuActive">
+            <svg v-html="icons.burgerClose" v-if="isMenuActive" />
+            <svg v-html="icons.burger" v-else />
+          </a>
+          <Content v-bind:meta="meta"></Content>
+        </div>
+      </div>
     </div>
   `,
   data: function() {
-    return mf.state;
+    return {
+      ...mf.state,
+      isMenuActive: false,
+      icons: icons,
+    };
   },
   computed: {},
   methods: {},
