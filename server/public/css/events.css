@@ -1,25 +1,4 @@
-#events {
-  display: flex;
-  height: calc(100vh - 12rem);
-}
-
-#events .left-column,
-#events .right-column {
-  padding: 0 1rem;
-}
-
-#events .left-column {
-  width: 66%;
-}
-
-#events .right-column {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 33%;
-}
-
-#events .sequence-section {
+.sequence {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -28,144 +7,99 @@
   overflow-y: auto;
 }
 
-#events .sequence-section > .sequence-event {
+.sequence__event {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-#events .sequence-section > .sequence-event ~ .sequence-event {
+.sequence__event ~ .sequence__event {
   margin-top: 5px;
 }
 
-#events .sequence-section > .sequence-event > div:not(:nth-child(2)) {
+.sequence__event > div:not(:nth-child(2)) {
   width: 100%;
   height: 5px;
   background-color: transparent;
 }
 
-#events .sequence-tag {
-  align-items: center;
-  display: flex;
-  background-color: rgb(178 229 178);
-  border: 2px solid green;
-  border-radius: 5px;
-  cursor: grab;
-  padding: 5px;
-  min-width: 100px;
-  margin: 0;
-  justify-content: space-between;
-}
-
-#events .sequence-tag svg {
-  cursor: pointer;
-  height: 20px;
-  width: 20px;
-}
-
-#events .sequence-tag .event-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-left: 10px;
-}
-
-#events .sequence-tag_ghost-image {
-  cursor: grabbing;
-  font-size: 0.5rem;
-}
-
-#events .sequence_actions {
+.sequence__actions {
   display: flex;
   justify-content: flex-end;
 }
 
-#events .sequence_actions > button {
+.sequence__action {
   background-color: transparent;
   border: unset;
   cursor: pointer;
 }
 
-#events .sequence_actions > button > svg {
+.sequence__icon {
   height: 20px;
   width: 20px;
 }
 
-/* left column */
-#events .events-section {
+
+/* EVENTS */
+.events {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-#events .events-section .events_wrapper {
-  height: 200px;
-  overflow-y: auto;
-}
-
-#events .events-section .events-type-wrapper {
-  display: flex;
-  margin-bottom: 10px;
-  height: 30px;
-  align-items: center;
-}
-
-#events .events-section .events-type-wrapper div {
-  display: flex;
-  align-items: center;
-  border-right: 1px solid;
-  cursor: pointer;
-  height: 100%;
-  min-width: 100px;
-  padding: 10px 5px;
-  margin: 0;
-}
-
-#events .events-list {
+.events__list {
   align-content: flex-start;
-  display: grid;
+  display: none;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 1rem;
   overflow: scroll;
   height: 62%;
 }
 
-#events .sequence-tag p {
-  margin: 0;
-  width: 100%;
+.events__list.is--active {
+  display: grid;
 }
 
+/* EVENTS - CUSTOM */
+.events__custom {
+  display: none;
+}
 
-#events .form {
+.events__custom.is--active {
+  display: block;
+}
+
+.events__form {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-#events .dragged_over {
+.dragged_over {
   transform: translateX(100%);
 }
 
-#events .new_sequence {
+.new_sequence {
   border: unset;
   font-size: 1.2rem;
   font-weight: bold;
   width: 100%;
 }
 
-#events .new_sequence:focus-visible,
-#events .new_sequence:focus {
+.new_sequence:focus-visible,
+.new_sequence:focus {
   border: unset;
   outline: unset;
 }
 
-#events .form .form_block {
+.events__form-block {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  flex: 1 1 0;
 }
 
-#events .form .form-column {
+.events__form-column {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -173,38 +107,32 @@
   max-height: 100%;
 }
 
-#events .form .form-column pre {
+.events__form-column pre {
   display: flex;
   width: 100%;
   overflow: auto;
 }
 
-#events .form .form-column:first-child {
+.events__form-column:first-child {
   min-width: 20%;
 }
 
-#events .form .form-column:nth-child(2) {
+.events__form-column:nth-child(2) {
   min-width: 40%;
 }
 
-#events .form .form-column:nth-child(3) {
+.events__form-column:nth-child(3) {
   min-width: 40%;
 }
 
-#events .form .form_spacer {
-  display: flex;
-  width: 20px;
-}
-
-#events .form .form_row {
+.events__form-row {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   height: 100%;
   width: 100%;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  margin-bottom: 1rem;
 }
 
-#events .events-list-section {
-  margin-top: 10px;
-  height: 40vh;
-}

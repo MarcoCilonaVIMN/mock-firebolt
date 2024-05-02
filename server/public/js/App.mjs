@@ -27,13 +27,13 @@ export default {
   props: {},
   template: `
     <div id="app">
-      <div class="wrapper">
-        <div class="off-canvas" :class="{ 'is-active': isMenuActive }" >
+      <div class="layout__wrapper">
+        <div class="layout__off-canvas" :class="{ 'is--active': isMenuActive }" >
           <Header></Header>
           <Footer></Footer>
         </div>
-        <div class="layout-container" :class="{ 'is-active': isMenuActive }" >
-          <a class="off-canvas-control" @click="isMenuActive = !isMenuActive">
+        <div class="layout__container" :class="{ 'is--active': isMenuActive }" >
+          <a class="layout__off-canvas-control" @click="isMenuActive = !isMenuActive">
             <svg v-html="icons.burgerClose" v-if="isMenuActive" />
             <svg v-html="icons.burger" v-else />
           </a>
