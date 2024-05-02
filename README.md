@@ -64,7 +64,7 @@ This repo contains these elements:
     - Responds to Firebolt SDK requests and sends events to the Firebolt SDK via the socket transport layer
     - Presents a RESTful interface for control tools (CLI, browser extensions, web admin app) to use
     - Presents an Express-based web administrative app, which can be used to affect the behavior of the mock Firebolt server
-      - NOTE: **THE WEB ADMIN APP IS NOT FINISHED YET**.
+      - NOTE: **THE WEB ADMIN APP IS NOT FINISHED YET**. As of now, this fork contains a page to manage Firebolt events
 - **cli/**
   - A command-line interface which can be used to affect the behavior of the mock Firebolt server
 - **browser-extensions/**
@@ -103,16 +103,24 @@ To install and run:
 
 ```
 cd <the place you put your code repos>
-git clone https://github.com/rdkcentral/mock-firebolt.git            /* THIS REPO */
+git clone git@github.com:MarcoCilonaVIMN/mock-firebolt.git            /* THIS REPO */
 cd mock-firebolt
 
 # To install dependencies, clean/create build/ subdirectory, build and upgrade SDK, build source code within this project
 npm setup
-
+or
+yarn setup
 
 # One-time stuff
 cd server
 cp src/.mf.config.SAMPLE.json src/.mf.config.json
+
+# Starting Admin UI
+npm start
+or
+yarn start
+
+The admin UI will be serverd on localhost:3333
 
 # If you want support for Firebolt Core/Manage SDK
 # Run in a separate terminal window/tab, or use '&' to background
