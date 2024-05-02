@@ -24,7 +24,7 @@ export default {
   name: "Events",
   components: { Modal, PreviewEventModal },
   template: `
-    <div id="events">
+    <div id="events" class="layout__events">
       <PreviewEventModal :show="showPreviewModal" @close="showPreviewModal = false" :fireboltEvent="eventToPreview" />
 
       <Modal v-bind:show="showModal" key="uploadSequenceModal">
@@ -66,67 +66,78 @@ export default {
       </Modal>
 
       <!-- ******* left column ******* -->
-      <div class="left-column">
-        <h1>Create Event</h1>
-        <form v-on:submit.prevent="createCustomEvent" class="form">
-          <div class="form_row">
-            <div class="form-column">
-              <div class="form_block">
-                <label>Type</label>
-                <select v-model="customEvent.type">
-                <option disabled value="">Select the type</option>
-                  <option v-for="eventType in eventsTypes" v-bind:key="eventType" v-bind:value="eventType">{{ eventType }}</option>
-                </select>
-              </div>
-                
-              <div class="form_block">
-                <label>Display Name</label>
-                <input v-model="customEvent.displayName"></input>
-              </div>
-             <hr />
-              <div>
-                <button type="submit">Create</button>
-                <button v-on:click="exportElement(customEvent, 'event')"><svg v-html="icons.export"  />Export</button>
-              </div>
-            </div>
-            
-            <div class="form_spacer" />
-
-            <div class="form-column">
-              <div class="form_block">
-                <label>Rest</label>
-                <textarea v-on:change="handleTextAreaUpdate" :value="JSON.stringify(this.customEvent.rest, null, 2)" cols=35 rows=10 ></textarea>
-              </div>
-            </div>
-
-            <div class="form_spacer" />
-
-            <div class="form-column">
-                <label>Outcome</label>
-                <pre>{{ prettyFormat }}</pre>
-            </div>
-          </div>
-        </form>
-        <hr />
+      <div class="layout__left">        
         <section class="events-list-section">
           <h1>Events list</h1>
 
           <p>Select from the lists below which events you want to include in the sequence. The oreder of the selected events will reflect the order
           in which the events will be sent</p>
 
-          <div class="events-section">
-            <div class="events-type-wrapper">
-              <div v-for="(eventType, index) in eventsTypes" v-bind:key="index" v-on:click="selectedType = eventType">
+          <div class="events">
+            <div class="tabs">
+              <div 
+                v-on:click="isCustomTabActive = !isCustomTabActive"
+                class="tabs__tab"
+                :class="{'is--active' : isCustomTabActive}"
+              >
+                custom event
+              </div>
+
+              <div 
+                v-for="(eventType, index) in eventsTypes" 
+                v-bind:key="index" 
+                v-on:click="(_) => { selectedType = eventType; isCustomTabActive = false;}"
+                class="tabs__tab"
+                :class="{'is--active' : selectedType === eventType && !isCustomTabActive}"
+              >
                 {{ eventType }}
               </div>
             </div>
 
-            <div class="events-list">
-              <div class="sequence-tag" v-for="(cliEvent, index) in cliEvents[selectedType]" v-bind:key="index">
-                <p draggable v-on:dragstart="(event) => handleDragStartFromList(event, cliEvent)" v-on:dragover.prevent v-on:click="updateSequence(cliEvent)" >{{ cliEvent.displayName || cliEvent.method }}</p>
-                <div class="event-actions">
-                  <svg v-html="icons.view" v-on:click="(_) => previewEvent(cliEvent)" />
-                  <svg v-html="icons.copy" v-on:click="handleCopyEvent(cliEvent)" />
+            <div class="events__custom" :class="{'is--active' : isCustomTabActive}" >
+              <h1>Create Event</h1>
+              <form v-on:submit.prevent="createCustomEvent" class="events__form">
+                  <div class="events__form-row">
+                    <div class="events__form_block">
+                      <label>Type</label>
+                      <select v-model="customEvent.type">
+                      <option disabled value="">Select the type</option>
+                        <option v-for="eventType in eventsTypes" v-bind:key="eventType" v-bind:value="eventType">{{ eventType }}</option>
+                      </select>
+                    </div>
+                      
+                    <div class="events__form_block">
+                      <label>Display Name</label>
+                      <input v-model="customEvent.displayName"></input>
+                    </div>
+                  
+                    <div class="events__form_block">
+                      <button type="submit">Create</button>
+                      <button v-on:click="exportElement(customEvent, 'event')"><svg v-html="icons.export"  />Export</button>
+                    </div>
+                  </div>
+                  
+    
+                  <div class="events__form-row">
+                    <div class="events__form_block">
+                      <label>Rest</label>
+                      <textarea v-on:change="handleTextAreaUpdate" :value="JSON.stringify(this.customEvent.rest, null, 2)" cols=35 rows=10 ></textarea>
+                    </div>
+
+                    <div class="events__form_block">
+                        <label>Outcome</label>
+                        <pre>{{ prettyFormat }}</pre>
+                    </div>
+                  </div>
+              </form>
+            </div>
+
+            <div class="events__list" :class="{'is--active' : !isCustomTabActive}" >
+              <div class="tag" v-for="(cliEvent, index) in cliEvents[selectedType]" v-bind:key="index">
+                <p class="tag__text" draggable v-on:dragstart="(event) => handleDragStartFromList(event, cliEvent)" v-on:dragover.prevent v-on:click="updateSequence(cliEvent)" >{{ cliEvent.displayName || cliEvent.method }}</p>
+                <div class="tag__actions">
+                  <svg class="tag__icon" v-html="icons.view" v-on:click="(_) => previewEvent(cliEvent)" />
+                  <svg class="tag__icon" v-html="icons.copy" v-on:click="handleCopyEvent(cliEvent)" />
                 </div>
               </div>
             </div>
@@ -135,40 +146,40 @@ export default {
       </div>
 
       <!-- ******* right column ******* -->
-      <div class="right-column">
+      <div class="layout__right">
         <input v-model="sequenceName" class="new_sequence"/>
 
-        <div class="sequence-section">
+        <div class="sequence">
           <p v-if="sequence.length === 0">No events in the sequence. Start dragging events in</p>
-          <div v-for="(sequence_event, index) in sequence" :data-index="index" v-bind:key="index" class="sequence-event" draggable v-on:dragstart="(event) => handleDragStart(event, index)" v-on:dragover.prevent>
+          <div v-for="(sequence_event, index) in sequence" :data-index="index" v-bind:key="index" class="sequence__event" draggable v-on:dragstart="(event) => handleDragStart(event, index)" v-on:dragover.prevent>
             <div data-type="prev" :data-id="index" v-on:dragover="(event) => handleDragOver(event, index)" v-on:dragleave="(event) => handleDragLeave(event, index)" v-on:drop="(event) => handlePrevNextDrop(event, index)"/>
-            <div class="sequence-tag" v-on:drop="(event) => handleDragDrop(event, index)">
-              <p>{{ sequence_event.displayName || sequence_event.method }}</p>
-              <div class="event-actions">
-                <svg v-html="icons.view" v-on:click="(_) => previewEvent(sequence_event)" />
-                <svg v-html="icons.remove" v-on:click="sequence.splice(index, 1)" />
+            <div class="tag" v-on:drop="(event) => handleDragDrop(event, index)">
+              <p class="tag__text">{{ sequence_event.displayName || sequence_event.method }}</p>
+              <div class="tag__actions">
+                <svg class="tag__icon" v-html="icons.view" v-on:click="(_) => previewEvent(sequence_event)" />
+                <svg class="tag__icon" v-html="icons.remove" v-on:click="sequence.splice(index, 1)" />
               </div>
             </div>
             <div data-type="next" :data-id="index" v-on:dragover="(event) => handleDragOver(event, index)" v-on:dragleave="(event) => handleDragLeave(event, index)" v-on:drop="(event) => handlePrevNextDrop(event, index)"/>
           </div>
         </div>
 
-        <div class="sequence_actions">
-          <button v-on:click="showModal = true" title="Upload">
-            <svg v-html="icons.upload" />
+        <div class="sequence__actions">
+          <button class="sequence__action" v-on:click="showModal = true" title="Upload">
+            <svg class="sequence__icon" v-html="icons.upload" />
           </button>
           <template v-if="sequence.length > 0">
-            <button v-on:click="exportElement(sequence, 'sequence')" title="Export">
-              <svg v-html="icons.export" />
+            <button class="sequence__action" v-on:click="exportElement(sequence, 'sequence')" title="Export">
+              <svg class="sequence__icon" v-html="icons.export" />
             </button>
-            <button :disabled="sequence.length === 0" v-on:click="saveSequence" title="Save">
-              <svg v-html="icons.save" />
+            <button class="sequence__action" :disabled="sequence.length === 0" v-on:click="saveSequence" title="Save">
+              <svg class="sequence__icon" v-html="icons.save" />
             </button>
-            <button v-on:click="sequence = []" title="Clear">
-              <svg v-html="icons.clear" />
+            <button class="sequence__action" v-on:click="sequence = []" title="Clear">
+              <svg class="sequence__icon" v-html="icons.clear" />
             </button>
-            <button v-on:click="sendSequence" title="Play">
-              <svg v-html="icons.play" />
+            <button class="sequence__action" v-on:click="sendSequence" title="Play">
+              <svg class="sequence__icon" v-html="icons.play" />
             </button>
           </template>
         </div>
@@ -177,6 +188,7 @@ export default {
   `,
   data: function () {
     return {
+      isCustomTabActive: true,
       eventToPreview: {},
       showModal: false,
       showPreviewModal: false,
@@ -257,6 +269,7 @@ export default {
           displayName: undefined,
         },
       };
+      this.isCustomTabActive = true
     },
     handlePrevNextDrop(event, index) {
       event.preventDefault();
@@ -320,7 +333,7 @@ export default {
     },
     setDragGhost(event) {
       let dragImage = event.target.cloneNode(true);
-      dragImage.classList.add("sequence_item_ghost-image");
+      dragImage.classList.add("tag__ghost");
 
       // dragImage.style.transform = "scale(0.5)";
       document.body.appendChild(dragImage);

@@ -1,0 +1,35 @@
+
+/* TABS */
+.tabs {
+  display: flex;
+  margin-bottom: 10px;
+  height: 30px;
+  align-items: center;
+}
+.tabs__tab {
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    padding: 8px;
+    text-align: center;
+    text-wrap: nowrap;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid;
+    cursor: pointer;
+    height: 100%;
+    min-width: 100px;
+    padding: 10px 5px;
+    margin: 0;
+  }
+  
+  .tabs__tab:first-child {
+    border-left: 1px solid black;
+  }
+  
+  .tabs__tab:last-child {
+    border-right: 1px solid black;
+  }
+  
+  .tabs__tab.is--active {
+    background: lightgray
+  }

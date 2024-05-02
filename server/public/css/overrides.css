@@ -1,0 +1,14 @@
+/* mock server specific overrides - start */
+#header {
+    border-bottom: 0;
+}
+#nav-bar a {
+    text-align: left;
+    width: 100%;
+    margin-bottom: 5px;
+}
+#content {
+    padding: 1rem 1rem 1rem 3rem;
+    height: 100vh;
+}
+/* mock server specific overrides - end*/
