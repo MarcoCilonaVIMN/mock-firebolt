@@ -120,6 +120,8 @@ npm start
 or
 yarn start
 
+The admin UI will be serverd on localhost:3333
+
 # If you want support for Firebolt Core/Manage SDK
 # Run in a separate terminal window/tab, or use '&' to background
 cd server
