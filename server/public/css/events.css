@@ -92,7 +92,7 @@
   outline: unset;
 }
 
-.events__form_block {
+.events__form-block {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
