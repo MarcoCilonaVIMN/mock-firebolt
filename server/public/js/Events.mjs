@@ -216,7 +216,7 @@ export default {
     },
     "customEvent.type": {
       handler: function (value) {
-        if (Object.keys(this.customEvent.rest).length !== 0) return;
+        if (this.customEvent.rest && Object.keys(this.customEvent.rest).length !== 0) return;
 
         if (
           value === "accessibility" ||
@@ -403,6 +403,8 @@ export default {
       });
 
       if (customEvent.status === 200) {
+        this.isCustomTabActive = false;
+        this.selectedType = requestPayload.type;
         this.customEvent = {};
         this.getCliEvents();
       }
@@ -411,8 +413,6 @@ export default {
       const response = await fetch("/api/v1/firebolt-events");
       const parsedResponse = await response.json();
       this.cliEvents = parsedResponse.data;
-
-      this.selectedType = this.eventsTypes[0];
     },
     getSequences: async function () {
       const response = await fetch("/api/v1/sequences");
